@@ -88,6 +88,13 @@ function handleGameGrid() {
 
 // console.log(path);
 
+const base = [];
+
+function handleBase() {
+  base.push(new Base());
+  base.draw();
+}
+
 // projectiles
 // BOUNCERS (defenders)
 const bouncers = [];
@@ -121,25 +128,42 @@ canvas.addEventListener("click", function () {
 });
 function handleBouncers() {
   bouncers.forEach((bouncer) => {
-    bouncer.draw();
-    // console.log(bouncers);
-    bouncer.projectiles.forEach((projectile) => {
-      projectile.update();
+    bouncer.update();
+    bouncer.target = null;
+
+    const validEnemies = enemies.filter((enemy) => {
+      const xDistance = enemy.x - bouncer.x; // adjust to be in center
+      const yDistance = enemy.y - bouncer.y;
+      const distance = Math.hypot(xDistance, yDistance);
+      return distance < enemy.radius + bouncer.radius;
     });
+
+    bouncer.target = validEnemies[0];
+
+    for (let i = bouncer.projectiles.length - 1; i >= 0; i--) {
+      const projectile = bouncer.projectiles[i];
+
+      projectile.update();
+
+      const xDistance = projectile.enemy.x - projectile.x; // adjust to be in center
+      const yDistance = projectile.enemy.y - projectile.y;
+      const distance = Math.hypot(xDistance, yDistance);
+
+      // when projectile hits enemy
+      if (distance < projectile.enemy.radius + projectile.radius) {
+        projectile.enemy.health -= 20;
+        if (projectile.enemy.health <= 0) {
+          const enemyIndex = enemies.findIndex((enemy) => {
+            return projectile.enemy === enemy;
+          });
+          if (enemyIndex > -1) enemies.splice(enemyIndex, 1); // avoid bugs with removal from array
+        }
+        console.log(projectile.enemy.health);
+        bouncer.projectiles.splice(i, 1);
+      }
+    }
   });
-
-  // for (let i = 0; i < bouncers.length; i++) {
-  //   bouncers[i].draw();
-
-  //     for (let j = 0; j < bouncers.projectiles.length; j++) {
-
-  //     }
-  //   // bouncers.projectiles.forEach((projectile) => {
-  //   //   projectile.draw();
-  //   // });
-  // }
 }
-
 ///////////// enemies ///////////////
 
 const enemies = [];
@@ -154,12 +178,6 @@ for (let i = 1; i < 10; i++) {
   // );
 }
 // const enemy = new Enemy(path[0].x + cellSize / 4, path[0].y);
-
-class Base {
-  constructor() {
-    this.health = 10;
-  }
-}
 
 // resources
 function handleGameStatus() {
@@ -177,9 +195,16 @@ function animate() {
   handleGameGrid();
   handleBouncers();
   handleGameStatus();
+  handleBase();
+
+  // Add base
 
   // Add enemy
-  enemies.forEach((enemy) => enemy.update());
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    const enemy = enemies[i];
+    enemy.update();
+  }
+
   // enemy.update();
   requestAnimationFrame(animate); // creates animation loop
 }
