@@ -1,5 +1,5 @@
 const canvas = document.getElementById("canvas");
-console.log(canvas);
+// console.log(canvas);
 const ctx = canvas.getContext("2d");
 canvas.width = 900;
 canvas.height = 600;
@@ -8,8 +8,7 @@ canvas.height = 600;
 const cellSize = 100;
 const cellGap = 3;
 const gameGrid = [];
-const bouncers = [];
-let bouncerCost = 100; // change later
+let money = 300;
 
 // mouse
 const mouse = {
@@ -77,7 +76,7 @@ function createGrid() {
 }
 
 createGrid();
-console.log(gameGrid);
+// console.log(gameGrid);
 function handleGameGrid() {
   for (let i = 0; i < gameGrid.length; i++) {
     gameGrid[i].draw();
@@ -89,10 +88,57 @@ function handleGameGrid() {
 
 // console.log(path);
 
-// handleGameGrid();
 // projectiles
+// BOUNCERS (defenders)
+const bouncers = [];
+// ADD BOUNCER FUNCTION
+canvas.addEventListener("click", function () {
+  let bouncerCost = 100;
 
-// towers
+  const gridPositionX = mouse.x - (mouse.x % cellSize);
+  const gridPositionY = mouse.y - (mouse.y % cellSize);
+  let isClashed;
+
+  // not allowing to place multiple bouncers in the same place
+  for (let i = 0; i < bouncers.length; i++) {
+    if (bouncers[i].x === gridPositionX && bouncers[i].y === gridPositionY) {
+      return;
+    }
+  }
+
+  // Check if click is in the path
+  for (let i = 0; i < path.length; i++) {
+    const element = path[i];
+    isClashed = element.x === gridPositionX && element.y === gridPositionY;
+    if (isClashed) {
+      return true;
+    }
+  }
+  if (isClashed === false && money >= bouncerCost) {
+    bouncers.push(new Bouncer(gridPositionX, gridPositionY));
+    money -= bouncerCost;
+  }
+});
+function handleBouncers() {
+  bouncers.forEach((bouncer) => {
+    bouncer.draw();
+    // console.log(bouncers);
+    bouncer.projectiles.forEach((projectile) => {
+      projectile.update();
+    });
+  });
+
+  // for (let i = 0; i < bouncers.length; i++) {
+  //   bouncers[i].draw();
+
+  //     for (let j = 0; j < bouncers.projectiles.length; j++) {
+
+  //     }
+  //   // bouncers.projectiles.forEach((projectile) => {
+  //   //   projectile.draw();
+  //   // });
+  // }
+}
 
 ///////////// enemies ///////////////
 
@@ -116,12 +162,21 @@ class Base {
 }
 
 // resources
+function handleGameStatus() {
+  ctx.fillStyle = "gold";
+  ctx.font = "20px Arial";
+  ctx.fillText("Money: " + money, 20, 55);
+}
+
 // utilities
+
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "rgb(56,56,56)";
   ctx.fillRect(0, 0, controlsBar.width, controlsBar.height);
   handleGameGrid();
+  handleBouncers();
+  handleGameStatus();
 
   // Add enemy
   enemies.forEach((enemy) => enemy.update());
