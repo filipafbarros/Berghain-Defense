@@ -2,6 +2,12 @@ body {
   background: black;
 }
 
+#main {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
 #canvas {
   position: absolute;
   top: 50%;
@@ -10,4 +16,18 @@ body {
   width: 900px;
   height: 600px;
   background: white;
+}
+
+#game-over {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 72px;
+  color: gold;
+  -webkit-text-stroke: 2px black;
 }

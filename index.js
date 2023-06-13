@@ -9,6 +9,7 @@ const cellSize = 100;
 const cellGap = 3;
 const gameGrid = [];
 let money = 300;
+let score = 0;
 
 // mouse
 const mouse = {
@@ -17,6 +18,9 @@ const mouse = {
   width: 0.1,
   height: 0.1,
 };
+
+// Images
+// const imgHorizontal =
 
 let canvasPosition = canvas.getBoundingClientRect();
 canvas.addEventListener("mousemove", function (e) {
@@ -167,7 +171,10 @@ function handleBouncers() {
             return projectile.enemy === enemy;
           });
           if (enemyIndex > -1) enemies.splice(enemyIndex, 1); // avoid bugs with removal from array
+          money += 20;
+          score += 50;
         }
+
         console.log(projectile.enemy.health);
         bouncer.projectiles.splice(i, 1);
       }
@@ -180,10 +187,12 @@ function handleBouncers() {
 //
 //
 const enemies = [];
+let enemyCount = 5;
+let wave = 1;
 
-function spawnEnemies() {
+function spawnEnemies(spawnCount) {
   let offset = 100;
-  for (let i = 1; i < 10; i++) {
+  for (let i = 1; i < spawnCount; i++) {
     // setInterval(
     enemies.push(
       new Enemy(path[0].getXWaypoint() - offset * i, path[0].getYWaypoint())
@@ -192,7 +201,7 @@ function spawnEnemies() {
     // );
   }
 }
-spawnEnemies();
+spawnEnemies(enemyCount);
 
 let health = base.health;
 
@@ -207,7 +216,18 @@ function handleEnemies() {
       health -= enemy.damage;
       enemies.splice(0, 1);
     }
+
+    if (health === 0) {
+      console.log("game over");
+    }
   });
+
+  // tracking total amount of enemies
+  if (enemies.length === 0) {
+    enemyCount += 4;
+    spawnEnemies(enemyCount);
+    wave++;
+  }
 }
 
 // resources
@@ -221,6 +241,16 @@ function handleGameStatus() {
   ctx.fillStyle = "gold";
   ctx.font = "15px Arial";
   ctx.fillText("Coolness Level: " + health, 720, 55);
+
+  // Wave counter
+  ctx.fillStyle = "gold";
+  ctx.font = "15px Arial";
+  ctx.fillText("Wave: " + wave, 170, 55);
+
+  // Score
+  ctx.fillStyle = "gold";
+  ctx.font = "15px Arial";
+  ctx.fillText("Score: " + score, 300, 55);
 }
 
 // utilities
@@ -235,17 +265,13 @@ function animate() {
   handleBase();
   handleEnemies();
 
-  // Add base
+  const animationId = requestAnimationFrame(animate); // creates animation loop
 
-  // Add enemy
-  // for (let i = enemies.length - 1; i >= 0; i--) {
-  //   const enemy = enemies[i];
-  //   enemy.update();
-  // }
-
-  // enemy.update();
-  requestAnimationFrame(animate); // creates animation loop
+  if (health === 0) {
+    cancelAnimationFrame(animationId);
+    document.querySelector("#game-over").style.display = "flex";
+  }
 }
-console.log(path);
+// console.log(path);
 
 animate();
