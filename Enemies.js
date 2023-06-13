@@ -7,7 +7,7 @@ class Enemy {
     this.height = 50;
     this.waypointIndex = 0;
     this.radius = 25;
-
+    this.damage = 100;
     this.health = 100;
     // this.speed = 1;
     // this.pathIndex = 0; // DEFINE PATH ARRAY FIRST

@@ -40,9 +40,10 @@ const controlsBar = {
 // WAYPOINTS FOR MOVEMENT
 const pathIndexes = [
   18, 27, 36, 37, 38, 29, 20, 11, 2, 3, 4, 13, 22, 31, 40, 41, 42, 33, 24, 25,
+  26,
 ];
 
-const waypoints = [0, 2, 4, 8, 10, 14, 16, 18, 19];
+const waypoints = [0, 2, 4, 8, 10, 14, 16, 18, 20];
 
 // console.log(gameGrid);
 const path = [];
@@ -61,6 +62,8 @@ function collision(first, second) {
   }
   return false; // No collision
 }
+
+// GRID
 
 function createGrid() {
   for (let y = cellSize; y < canvas.height; y += cellSize) {
@@ -86,18 +89,25 @@ function handleGameGrid() {
   }
 }
 
+////
+///
 // console.log(path);
 
-const base = [];
+//
+// Base - Berghain
+const base = new Base();
 
 function handleBase() {
-  base.push(new Base());
-  base.draw();
+  // base.push(new Base());
+  return base.draw();
 }
 
-// projectiles
+//
+//
+//
 // BOUNCERS (defenders)
 const bouncers = [];
+
 // ADD BOUNCER FUNCTION
 canvas.addEventListener("click", function () {
   let bouncerCost = 100;
@@ -165,25 +175,52 @@ function handleBouncers() {
   });
 }
 ///////////// enemies ///////////////
-
+//
+//
+//
+//
 const enemies = [];
 
-let offset = 100;
-for (let i = 1; i < 10; i++) {
-  // setInterval(
-  enemies.push(
-    new Enemy(path[0].getXWaypoint() - offset * i, path[0].getYWaypoint())
-  );
-  // 1000
-  // );
+function spawnEnemies() {
+  let offset = 100;
+  for (let i = 1; i < 10; i++) {
+    // setInterval(
+    enemies.push(
+      new Enemy(path[0].getXWaypoint() - offset * i, path[0].getYWaypoint())
+    );
+    // 1000
+    // );
+  }
 }
-// const enemy = new Enemy(path[0].x + cellSize / 4, path[0].y);
+spawnEnemies();
+
+let health = base.health;
+
+function handleEnemies() {
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    const enemy = enemies[i];
+    enemy.update();
+  }
+
+  enemies.forEach((enemy) => {
+    if (enemy.x + enemy.radius === base.x) {
+      health -= enemy.damage;
+      enemies.splice(0, 1);
+    }
+  });
+}
 
 // resources
 function handleGameStatus() {
+  // Money
   ctx.fillStyle = "gold";
-  ctx.font = "20px Arial";
+  ctx.font = "15px Arial";
   ctx.fillText("Money: " + money, 20, 55);
+
+  // Base Health
+  ctx.fillStyle = "gold";
+  ctx.font = "15px Arial";
+  ctx.fillText("Coolness Level: " + health, 720, 55);
 }
 
 // utilities
@@ -196,17 +233,19 @@ function animate() {
   handleBouncers();
   handleGameStatus();
   handleBase();
+  handleEnemies();
 
   // Add base
 
   // Add enemy
-  for (let i = enemies.length - 1; i >= 0; i--) {
-    const enemy = enemies[i];
-    enemy.update();
-  }
+  // for (let i = enemies.length - 1; i >= 0; i--) {
+  //   const enemy = enemies[i];
+  //   enemy.update();
+  // }
 
   // enemy.update();
   requestAnimationFrame(animate); // creates animation loop
 }
+console.log(path);
 
 animate();
