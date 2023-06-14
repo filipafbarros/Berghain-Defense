@@ -10,6 +10,8 @@ const cellGap = 3;
 const gameGrid = [];
 let money = 300;
 let score = 0;
+let frame = 0;
+let chosenBouncer = 1;
 
 // mouse
 const mouse = {
@@ -17,9 +19,39 @@ const mouse = {
   y: undefined,
   width: 0.1,
   height: 0.1,
+  clicked: false,
 };
+canvas.addEventListener("mousedown", function () {
+  mouse.clicked = true;
+});
+
+canvas.addEventListener("mouseup", function () {
+  mouse.clicked = false;
+});
 
 // Images
+
+const imgHorizontal = new Image();
+imgHorizontal.src = "./imgs/horizontal.png";
+
+const imgVertical = new Image();
+imgVertical.src = "./imgs/vertical.png";
+
+const imgSide1 = new Image();
+imgSide1.src = "./imgs/side1.png";
+
+const imgSide2 = new Image();
+imgSide2.src = "./imgs/side2.png";
+
+const imgSide3 = new Image();
+imgSide3.src = "./imgs/side3.png";
+
+const imgSide4 = new Image();
+imgSide4.src = "./imgs/side4.png";
+
+const backgroundImg = new Image();
+backgroundImg.src = "./imgs/pixil-frame-0 (7).png";
+
 // const imgHorizontal =
 
 let canvasPosition = canvas.getBoundingClientRect();
@@ -87,9 +119,22 @@ createGrid();
 function handleGameGrid() {
   for (let i = 0; i < gameGrid.length; i++) {
     gameGrid[i].draw();
-  }
-  for (let i = 0; i < path.length; i++) {
-    path[i].fill();
+    gameGrid[i].fill(backgroundImg);
+    for (let i = 0; i < path.length; i++) {
+      if (i === 0 || i === 10) {
+        path[i].fill(imgSide3);
+      } else if (i === 2 || i === 14) {
+        path[i].fill(imgSide2);
+      } else if (i === 8 || i === 18) {
+        path[i].fill(imgSide1);
+      } else if ((i === 4) | (i === 16)) {
+        path[i].fill(imgSide4);
+      } else if (i === 3 || i === 9 || i === 15 || i === 19) {
+        path[i].fill(imgHorizontal);
+      } else {
+        path[i].fill(imgVertical);
+      }
+    }
   }
 }
 
@@ -111,6 +156,50 @@ function handleBase() {
 //
 // BOUNCERS (defenders)
 const bouncers = [];
+
+const bouncer1 = {
+  x: 500,
+  y: 20,
+  width: 70,
+  height: 70,
+};
+
+const bouncer2 = {
+  x: 600,
+  y: 20,
+  width: 70,
+  height: 70,
+};
+
+const imgSven2 = new Image();
+imgSven2.src = "./imgs/sven.png";
+
+function chooseBouncer() {
+  let bouncer1Stroke = "black";
+  if (collision(mouse, bouncer1) && mouse.clicked === true) {
+    chosenBouncer = 1;
+  }
+
+  if (chosenBouncer === 1) {
+    bouncer1Stroke = "gold";
+  } else {
+    bouncer1Stroke = "black";
+  }
+
+  ctx.lineWidth = 1;
+  ctx.fillStyle = "rgba(0,0,0,0.2)";
+  ctx.fillRect(bouncer1.x, bouncer1.y, bouncer1.width, bouncer1.height);
+  ctx.strokeStyle = bouncer1Stroke;
+  ctx.strokeRect(bouncer1.x, bouncer1.y, bouncer1.width, bouncer1.height);
+  ctx.drawImage(
+    imgSven2,
+    bouncer1.x,
+    bouncer1.y,
+    bouncer1.width,
+    bouncer1.height
+  );
+  // ctx.fillRect(bouncer2.x, bouncer2.y, bouncer2.width, bouncer2.height);
+}
 
 // ADD BOUNCER FUNCTION
 canvas.addEventListener("click", function () {
@@ -175,7 +264,7 @@ function handleBouncers() {
           score += 50;
         }
 
-        console.log(projectile.enemy.health);
+        // console.log(projectile.enemy.health);
         bouncer.projectiles.splice(i, 1);
       }
     }
@@ -185,6 +274,21 @@ function handleBouncers() {
 //
 //
 //
+const enemyTypes = [];
+const enemy1 = new Image();
+enemy1.src = "./enemies/enemy1.png";
+enemyTypes.push(enemy1);
+const enemy2 = new Image();
+enemy2.src = "./enemies/enemy2.png";
+enemyTypes.push(enemy2);
+
+const enemy3 = new Image();
+enemy3.src = "./enemies/enemy3.png";
+enemyTypes.push(enemy3);
+
+const enemy4 = new Image();
+enemy4.src = "./enemies/enemy4.png";
+enemyTypes.push(enemy4);
 //
 const enemies = [];
 let enemyCount = 5;
@@ -234,22 +338,22 @@ function handleEnemies() {
 function handleGameStatus() {
   // Money
   ctx.fillStyle = "gold";
-  ctx.font = "15px Arial";
-  ctx.fillText("Money: " + money, 20, 55);
+  ctx.font = "15px Petch";
+  ctx.fillText("Money: " + money, 30, 55);
 
   // Base Health
   ctx.fillStyle = "gold";
-  ctx.font = "15px Arial";
+  ctx.font = "15px Petch";
   ctx.fillText("Coolness Level: " + health, 720, 55);
 
   // Wave counter
   ctx.fillStyle = "gold";
-  ctx.font = "15px Arial";
+  ctx.font = "15px Petch";
   ctx.fillText("Wave: " + wave, 170, 55);
 
   // Score
   ctx.fillStyle = "gold";
-  ctx.font = "15px Arial";
+  ctx.font = "15px Petch";
   ctx.fillText("Score: " + score, 300, 55);
 }
 
@@ -263,7 +367,10 @@ function animate() {
   handleBouncers();
   handleGameStatus();
   handleBase();
+  chooseBouncer();
   handleEnemies();
+
+  frame++;
 
   const animationId = requestAnimationFrame(animate); // creates animation loop
 

@@ -8,21 +8,13 @@ class Projectile {
     };
     this.enemy = enemy;
     this.radius = 7.5;
+    this.image = new Image();
+    this.image.src = "./imgs/newpill.png";
   }
-
   draw() {
-    ctx.beginPath();
-    // ctx.rect(this.x, this.y, 10, 10);
-    ctx.arc(
-      this.x + cellSize / 2,
-      this.y + cellSize / 2,
-      this.radius,
-      0,
-      Math.PI * 2
-    );
-    ctx.fillStyle = "orange";
-    ctx.fill();
-    // console.log(estou);
+    ctx.drawImage(this.image, this.x, this.y);
+    // ctx.beginPath();
+    // ctx.arc();
   }
 
   update() {
@@ -34,8 +26,8 @@ class Projectile {
     );
     // console.log(enemies[0]);
 
-    this.velocity.x = Math.cos(angle) * 4;
-    this.velocity.y = Math.sin(angle) * 4;
+    this.velocity.x = Math.cos(angle) * 5;
+    this.velocity.y = Math.sin(angle) * 5;
 
     this.x += this.velocity.x;
     this.y += this.velocity.y;

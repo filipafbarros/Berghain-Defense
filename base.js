@@ -7,7 +7,8 @@ class Base {
     this.health = 900;
   }
   draw() {
-    ctx.fillStyle = "green";
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+    const berghain = new Image();
+    berghain.src = "./imgs/berghainpng.png";
+    ctx.drawImage(berghain, this.x, 100, this.width, 500);
   }
 }

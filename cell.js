@@ -13,10 +13,10 @@ class Cell {
     }
   }
 
-  fill() {
+  fill(img) {
     // add img
-    const img = new Image();
-    img.src = "./imgs/horizontal.png";
+    // const img = new Image();
+    // img.src = "./imgs/horizontal.png";
 
     ctx.drawImage(img, this.x, this.y, this.width, this.height);
     //   ctx.fillStyle = "yellow";
