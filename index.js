@@ -32,24 +32,25 @@ function handleButtonClick(event) {
 ///
 ///
 // Audio
-const introAudio = new Audio();
-introAudio.src = "/audios/burning-126066.mp3";
+const gameAudio = new Audio();
+gameAudio.src =
+  "/audios/final_Adam Beyer @ Panoramabar! (DrumcodeNight@Berghain) 04.11.2012 - TECHHOUSE BOMB .mp3";
 
-function playIntro() {
-  introAudio.play();
+function playAudio() {
+  gameAudio.play();
 }
 
-// Mute Button
-let isMuted = false;
-const muteImage = new Image();
-muteImage.src = "./imgs/icons8-no-audio-50.png";
+// // Mute Button
+// let isMuted = false;
+// const muteImage = new Image();
+// muteImage.src = "./imgs/icons8-no-audio-50.png";
 
-const unmuteImage = new Image();
-unmuteImage.src = "./imgs/icons8-sound-50.png";
+// const unmuteImage = new Image();
+// unmuteImage.src = "./imgs/icons8-sound-50.png";
 
-function toggleMute() {
-  isMuted = !isMuted;
-}
+// function toggleMute() {
+//   isMuted = !isMuted;
+// }
 
 //
 //
@@ -375,6 +376,8 @@ function startGame() {
           gridPositionY === 500)
       ) {
         return (isClashed = true);
+      } else if (gridPositionY === 0) {
+        return (isClashed = true);
       } else isClashed = false;
     }
 
@@ -477,7 +480,7 @@ function startGame() {
     // Money
     ctx.fillStyle = "gold";
     ctx.font = "15px Rubik";
-    ctx.fillText("Money: " + money, 30, 55);
+    ctx.fillText("Money: " + money, 0, 55);
 
     // Base Health
     ctx.fillStyle = "gold";
@@ -500,11 +503,11 @@ function startGame() {
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "rgb(56,56,56)";
-    ctx.fillRect(0, 0, controlsBar.width, controlsBar.height);
+    ctx.fillRect(0, 0, canvas.width, controlsBar.height);
     handleGameStatus();
     handleGameGrid();
     handleBouncers();
-
+    // playAudio();
     handleBase();
     chooseBouncer();
     handleEnemies();
