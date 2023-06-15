@@ -418,9 +418,11 @@ function startGame() {
             score += 50;
           }
 
-          // console.log(projectile.enemy.health);
+          console.log(projectile.enemy.health);
           bouncer.projectiles.splice(i, 1);
         }
+
+        //
       }
     });
   }
@@ -435,9 +437,6 @@ function startGame() {
       enemies.push(
         new Enemy(path[0].getXWaypoint() - offset * i, path[0].getYWaypoint())
       );
-
-      // 1000
-      // );
     }
   }
   spawnEnemies(enemyCount);

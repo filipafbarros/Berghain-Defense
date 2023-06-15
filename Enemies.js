@@ -17,17 +17,8 @@ class Enemy {
     this.spriteWidth = 288 / 6;
     this.spriteHeight = 48;
     this.increase = 0;
-
-    // this.speed = 1;
-    // this.pathIndex = 0; // DEFINE PATH ARRAY FIRST
   }
   draw() {
-    // ctx.fillStyle = "red";
-    // // ctx.fillRect(this.x, this.y, this.width, this.height);
-    // ctx.beginPath();
-    // ctx.arc(this.x + 25, this.y + 25, this.radius, 0, Math.PI * 2);
-    // ctx.fill();
-
     // health bar
     ctx.fillStyle = "red";
     ctx.fillRect(this.x, this.y - 10, this.width, 5);
