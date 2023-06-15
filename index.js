@@ -29,12 +29,30 @@ function handleButtonClick(event) {
   });
 }
 
+///
+///
+// Audio
 const introAudio = new Audio();
 introAudio.src = "/audios/burning-126066.mp3";
 
 function playIntro() {
   introAudio.play();
 }
+
+// Mute Button
+let isMuted = false;
+const muteImage = new Image();
+muteImage.src = "./imgs/icons8-no-audio-50.png";
+
+const unmuteImage = new Image();
+unmuteImage.src = "./imgs/icons8-sound-50.png";
+
+function toggleMute() {
+  isMuted = !isMuted;
+}
+
+//
+//
 
 // StartScreen
 function drawStartScreen() {
@@ -48,7 +66,7 @@ function drawStartScreen() {
 
   // Title
   ctx.fillStyle = "#d9809e";
-  ctx.font = "72px Rubik";
+  ctx.font = "72px Rowdies";
   ctx.textAlign = "center";
 
   ctx.strokeStyle = "black";
@@ -89,11 +107,12 @@ function drawStartScreen() {
     ctx.fillText(instructionLines[i], instructionsX, lineY);
   }
 
-  playIntro();
+  // playIntro();
 }
 //
 //
 imgBackground.onload = function () {
+  // playIntro();
   drawStartScreen();
 };
 //////
@@ -165,7 +184,6 @@ const path = [];
 const base = new Base();
 
 function handleBase() {
-  // base.push(new Base());
   return base.draw();
 }
 
@@ -291,12 +309,12 @@ function startGame() {
   //
   // BOUNCERS (defenders)
 
-  const bouncer2 = {
-    x: 600,
-    y: 20,
-    width: 70,
-    height: 70,
-  };
+  // const bouncer2 = {
+  //   x: 600,
+  //   y: 20,
+  //   width: 70,
+  //   height: 70,
+  // };
 
   function chooseBouncer() {
     let bouncer1Stroke = "black";
@@ -327,7 +345,7 @@ function startGame() {
 
   // ADD BOUNCER FUNCTION
   canvas.addEventListener("click", function () {
-    let bouncerCost = 100;
+    let bouncerCost = 150;
 
     const gridPositionX = mouse.x - (mouse.x % cellSize);
     const gridPositionY = mouse.y - (mouse.y % cellSize);
@@ -343,11 +361,27 @@ function startGame() {
     // Check if click is in the path
     for (let i = 0; i < path.length; i++) {
       const element = path[i];
-      isClashed = element.x === gridPositionX && element.y === gridPositionY;
-      if (isClashed) {
-        return true;
-      }
+      // const element2 = base;
+      // isClashed = element.x === gridPositionX && element.y === gridPositionY;
+      if (element.x === gridPositionX && element.y === gridPositionY) {
+        return (isClashed = true);
+      } else if (
+        base.x === gridPositionX &&
+        (gridPositionY === 0 ||
+          gridPositionY === 100 ||
+          gridPositionY === 200 ||
+          gridPositionY === 300 ||
+          gridPositionY === 400 ||
+          gridPositionY === 500)
+      ) {
+        return (isClashed = true);
+      } else isClashed = false;
     }
+
+    // Check if click is in top bar or last row
+    // for (let j = 0; j < gameGrid.length; j++) {
+    //   const element = gameGrid[i];
+    // }
     if (isClashed === false && money >= bouncerCost) {
       bouncers.push(new Bouncer(gridPositionX, gridPositionY));
       money -= bouncerCost;
@@ -467,9 +501,10 @@ function startGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "rgb(56,56,56)";
     ctx.fillRect(0, 0, controlsBar.width, controlsBar.height);
+    handleGameStatus();
     handleGameGrid();
     handleBouncers();
-    handleGameStatus();
+
     handleBase();
     chooseBouncer();
     handleEnemies();

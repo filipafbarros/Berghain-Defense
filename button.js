@@ -23,7 +23,7 @@ class Button {
     ctx.strokeRect(this.x, this.y, this.width, this.height);
 
     ctx.fillStyle = textColor;
-    ctx.font = "24px Rubik";
+    ctx.font = "22px Rubik";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(
