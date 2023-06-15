@@ -1,7 +1,7 @@
 const canvas = document.getElementById("canvas");
 // console.log(canvas);
 const ctx = canvas.getContext("2d");
-canvas.width = 900;
+canvas.width = 1000;
 canvas.height = 600;
 
 const imgBackground = new Image();
@@ -145,7 +145,10 @@ const imgSide4 = new Image();
 imgSide4.src = "./imgs/side4.png";
 
 const backgroundImg = new Image();
-backgroundImg.src = "./imgs/pixil-frame-0 (7).png";
+backgroundImg.src = ".imgs/bottle.png";
+
+const otherBackgroundImg = new Image();
+otherBackgroundImg.src = ".imgs/normal.png";
 
 const imgSven2 = new Image();
 imgSven2.src = "./imgs/centered-sven.png";
@@ -166,9 +169,14 @@ const controlsBar = {
 };
 
 // WAYPOINTS FOR MOVEMENT
+// const pathIndexes = [
+//   18, 27, 36, 37, 38, 29, 20, 11, 2, 3, 4, 13, 22, 31, 40, 41, 42, 33, 24, 25,
+//   26,
+// ];
+
 const pathIndexes = [
-  18, 27, 36, 37, 38, 29, 20, 11, 2, 3, 4, 13, 22, 31, 40, 41, 42, 33, 24, 25,
-  26,
+  20, 30, 40, 41, 42, 32, 22, 12, 2, 3, 4, 14, 24, 34, 44, 45, 46, 36, 26, 27,
+  28,
 ];
 
 const waypoints = [0, 2, 4, 8, 10, 14, 16, 18, 20];
@@ -280,7 +288,17 @@ function startGame() {
   function handleGameGrid() {
     for (let i = 0; i < gameGrid.length; i++) {
       gameGrid[i].draw();
-      gameGrid[i].fill(backgroundImg);
+      if (
+        gameGrid[i] === 13 ||
+        gameGrid[i] === 5 ||
+        gameGrid[i] === 47 ||
+        gameGrid[i] === 0
+      ) {
+        gameGrid[i].fill(backgroundImg);
+      } else {
+        gameGrid[i].fill(otherBackgroundImg);
+      }
+
       for (let i = 0; i < path.length; i++) {
         if (i === 0 || i === 10) {
           path[i].fill(imgSide3);
