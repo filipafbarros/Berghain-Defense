@@ -33,7 +33,7 @@ function handleButtonClick(event) {
 ///
 // Audio
 const gameAudio = new Audio();
-gameAudio.src = "/audios/soundtrack.mp3";
+gameAudio.src = "./audios/soundtrack.mp3";
 
 // // Mute Button
 // let isMuted = false;
@@ -513,7 +513,6 @@ function startGame() {
     handleBase();
     chooseBouncer();
     handleEnemies();
-
     frame++;
 
     const animationId = requestAnimationFrame(animate); // creates animation loop
