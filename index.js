@@ -33,8 +33,7 @@ function handleButtonClick(event) {
 ///
 // Audio
 const gameAudio = new Audio();
-gameAudio.src =
-  "/audios/final_Adam Beyer @ Panoramabar! (DrumcodeNight@Berghain) 04.11.2012 - TECHHOUSE BOMB .mp3";
+gameAudio.src = "/audios/soundtrack.mp3";
 
 function playAudio() {
   gameAudio.play();
