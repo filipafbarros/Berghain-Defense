@@ -35,10 +35,6 @@ function handleButtonClick(event) {
 const gameAudio = new Audio();
 gameAudio.src = "/audios/soundtrack.mp3";
 
-function playAudio() {
-  gameAudio.play();
-}
-
 // // Mute Button
 // let isMuted = false;
 // const muteImage = new Image();
@@ -152,7 +148,7 @@ const backgroundImg = new Image();
 backgroundImg.src = "./imgs/pixil-frame-0 (7).png";
 
 const imgSven2 = new Image();
-imgSven2.src = "./imgs/sven.png";
+imgSven2.src = "./imgs/centered-sven.png";
 
 // mouse
 const mouse = {
@@ -192,8 +188,8 @@ function handleBase() {
 const bouncers = [];
 
 const bouncer1 = {
-  x: 500,
-  y: 20,
+  x: 520,
+  y: 15,
   width: 70,
   height: 70,
 };
@@ -342,11 +338,9 @@ function startGame() {
     );
     // ctx.fillRect(bouncer2.x, bouncer2.y, bouncer2.width, bouncer2.height);
   }
-
+  let bouncerCost = 100;
   // ADD BOUNCER FUNCTION
   canvas.addEventListener("click", function () {
-    let bouncerCost = 150;
-
     const gridPositionX = mouse.x - (mouse.x % cellSize);
     const gridPositionY = mouse.y - (mouse.y % cellSize);
     let isClashed;
@@ -441,6 +435,7 @@ function startGame() {
       enemies.push(
         new Enemy(path[0].getXWaypoint() - offset * i, path[0].getYWaypoint())
       );
+
       // 1000
       // );
     }
@@ -454,7 +449,7 @@ function startGame() {
       const enemy = enemies[i];
       enemy.update();
     }
-
+    // console.log(enemies.health);
     enemies.forEach((enemy) => {
       if (enemy.x + enemy.radius === base.x) {
         health -= enemy.damage;
@@ -468,45 +463,53 @@ function startGame() {
 
     // tracking total amount of enemies
     if (enemies.length === 0) {
-      enemyCount += 4;
+      enemyCount += 5;
       spawnEnemies(enemyCount);
       wave++;
+      bouncerCost += 50;
+      enemies.forEach((enemy) => {
+        enemy.health += 20;
+        enemy.increase += 20;
+      });
     }
   }
 
-  // resources
+  // Top Bar Management
   function handleGameStatus() {
     // Money
     ctx.fillStyle = "gold";
-    ctx.font = "15px Rubik";
-    ctx.fillText("Money: " + money, 0, 55);
+    ctx.font = "20px Rubik";
+    ctx.fillText("Money: " + money, 415, 55);
 
     // Base Health
     ctx.fillStyle = "gold";
-    ctx.font = "15px Rubik";
+    ctx.font = "20px Rubik";
     ctx.fillText("Coolness Level: " + health, 720, 55);
 
     // Wave counter
     ctx.fillStyle = "gold";
-    ctx.font = "15px Rubik";
+    ctx.font = "20px Rubik";
     ctx.fillText("Wave: " + wave, 170, 55);
 
     // Score
     ctx.fillStyle = "gold";
-    ctx.font = "15px Rubik";
-    ctx.fillText("Score: " + score, 300, 55);
+    ctx.font = "20px Rubik";
+    ctx.fillText("Score: " + score, 280, 55);
   }
 
-  // utilities
+  // add bergain logo
+  const logo = new Image();
+  logo.src = "./imgs/berghain-logo.png";
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "rgb(56,56,56)";
     ctx.fillRect(0, 0, canvas.width, controlsBar.height);
+    ctx.drawImage(logo, 30, 20, 70, 70);
     handleGameStatus();
     handleGameGrid();
     handleBouncers();
-    // playAudio();
+    gameAudio.play();
     handleBase();
     chooseBouncer();
     handleEnemies();
@@ -518,6 +521,12 @@ function startGame() {
     if (health === 0) {
       cancelAnimationFrame(animationId);
       document.querySelector("#game-over").style.display = "flex";
+      gameAudio.pause();
+    }
+    if (wave === 6) {
+      cancelAnimationFrame(animationId);
+      document.querySelector(".win").style.display = "flex";
+      gameAudio.pause();
     }
   }
   // console.log(path);

@@ -16,6 +16,7 @@ class Enemy {
     this.maxFrame = 5;
     this.spriteWidth = 288 / 6;
     this.spriteHeight = 48;
+    this.increase = 0;
 
     // this.speed = 1;
     // this.pathIndex = 0; // DEFINE PATH ARRAY FIRST
@@ -32,7 +33,12 @@ class Enemy {
     ctx.fillRect(this.x, this.y - 10, this.width, 5);
 
     ctx.fillStyle = "green";
-    ctx.fillRect(this.x, this.y - 10, this.width * (this.health / 100), 5);
+    ctx.fillRect(
+      this.x,
+      this.y - 10,
+      this.width * (this.health / (100 + this.increase)),
+      5
+    );
 
     ctx.drawImage(
       this.enemyType,
