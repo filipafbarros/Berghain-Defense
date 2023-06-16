@@ -467,6 +467,7 @@ function startGame() {
       enemy.update();
     }
     // console.log(enemies.health);
+    // when enemies enter the base (berghain)
     enemies.forEach((enemy) => {
       if (enemy.x + enemy.radius === base.x) {
         health -= enemy.damage;

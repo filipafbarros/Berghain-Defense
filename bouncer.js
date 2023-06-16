@@ -10,7 +10,7 @@ class Bouncer {
     this.radius = 150;
     this.target;
     this.frames = 0;
-    this.chosenBouncer = this.chosenBouncer;
+    this.chosenBouncer = chosenBouncer;
   }
 
   draw() {

@@ -1,7 +1,7 @@
 class Projectile {
   constructor(x, y, enemy) {
-    this.x = x;
-    this.y = y;
+    this.x = x + 50;
+    this.y = y + 50;
     this.velocity = {
       x: 0,
       y: 0,
@@ -26,8 +26,8 @@ class Projectile {
     );
     // console.log(enemies[0]);
 
-    this.velocity.x = Math.cos(angle) * 5;
-    this.velocity.y = Math.sin(angle) * 5;
+    this.velocity.x = Math.cos(angle) * 6;
+    this.velocity.y = Math.sin(angle) * 6;
 
     this.x += this.velocity.x;
     this.y += this.velocity.y;
