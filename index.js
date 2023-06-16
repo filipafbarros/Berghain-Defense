@@ -11,7 +11,7 @@ canvas.addEventListener("click", startGame);
 
 //button config
 const buttons = [];
-const startButton = new Button(350, 300, 200, 55, "Start Game", startGame);
+const startButton = new Button(400, 300, 200, 55, "Start Game", startGame);
 buttons.push(startButton);
 
 canvas.addEventListener("click", handleButtonClick);
@@ -127,28 +127,28 @@ let chosenBouncer = 1;
 // Images
 
 const imgHorizontal = new Image();
-imgHorizontal.src = "./imgs/horizontal.png";
+imgHorizontal.src = "./imgs/newhorizontal.png";
 
 const imgVertical = new Image();
-imgVertical.src = "./imgs/vertical.png";
+imgVertical.src = "./imgs/newvertical.png";
 
 const imgSide1 = new Image();
-imgSide1.src = "./imgs/side1.png";
+imgSide1.src = "./imgs/newside1.png";
 
 const imgSide2 = new Image();
-imgSide2.src = "./imgs/side2.png";
+imgSide2.src = "./imgs/newside2.png";
 
 const imgSide3 = new Image();
-imgSide3.src = "./imgs/side3.png";
+imgSide3.src = "./imgs/newside3.png";
 
 const imgSide4 = new Image();
-imgSide4.src = "./imgs/side4.png";
+imgSide4.src = "./imgs/newside4.png";
 
 const backgroundImg = new Image();
-backgroundImg.src = ".imgs/bottle.png";
+backgroundImg.src = "./imgs/newbottle.png";
 
 const otherBackgroundImg = new Image();
-otherBackgroundImg.src = ".imgs/normal.png";
+otherBackgroundImg.src = "./imgs/newnormal.png";
 
 const imgSven2 = new Image();
 imgSven2.src = "./imgs/centered-sven.png";
@@ -196,7 +196,7 @@ function handleBase() {
 const bouncers = [];
 
 const bouncer1 = {
-  x: 520,
+  x: 600,
   y: 15,
   width: 70,
   height: 70,
@@ -496,22 +496,22 @@ function startGame() {
     // Money
     ctx.fillStyle = "gold";
     ctx.font = "20px Rubik";
-    ctx.fillText("Money: " + money, 415, 55);
+    ctx.fillText("Money: " + money, 470, 55);
 
     // Base Health
     ctx.fillStyle = "gold";
     ctx.font = "20px Rubik";
-    ctx.fillText("Coolness Level: " + health, 720, 55);
+    ctx.fillText("Coolness Level: " + health, 820, 55);
 
     // Wave counter
     ctx.fillStyle = "gold";
     ctx.font = "20px Rubik";
-    ctx.fillText("Wave: " + wave, 170, 55);
+    ctx.fillText("Wave: " + wave, 200, 55);
 
     // Score
     ctx.fillStyle = "gold";
     ctx.font = "20px Rubik";
-    ctx.fillText("Score: " + score, 280, 55);
+    ctx.fillText("Score: " + score, 330, 55);
   }
 
   // add bergain logo
