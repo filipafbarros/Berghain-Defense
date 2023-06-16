@@ -1,7 +1,7 @@
 const canvas = document.getElementById("canvas");
 // console.log(canvas);
 const ctx = canvas.getContext("2d");
-canvas.width = 900;
+canvas.width = 1000;
 canvas.height = 600;
 
 const imgBackground = new Image();
@@ -11,7 +11,7 @@ canvas.addEventListener("click", startGame);
 
 //button config
 const buttons = [];
-const startButton = new Button(350, 300, 200, 55, "Start Game", startGame);
+const startButton = new Button(400, 300, 200, 55, "Start Game", startGame);
 buttons.push(startButton);
 
 canvas.addEventListener("click", handleButtonClick);
@@ -127,25 +127,28 @@ let chosenBouncer = 1;
 // Images
 
 const imgHorizontal = new Image();
-imgHorizontal.src = "./imgs/horizontal.png";
+imgHorizontal.src = "./imgs/newhorizontal.png";
 
 const imgVertical = new Image();
-imgVertical.src = "./imgs/vertical.png";
+imgVertical.src = "./imgs/newvertical.png";
 
 const imgSide1 = new Image();
-imgSide1.src = "./imgs/side1.png";
+imgSide1.src = "./imgs/newside1.png";
 
 const imgSide2 = new Image();
-imgSide2.src = "./imgs/side2.png";
+imgSide2.src = "./imgs/newside2.png";
 
 const imgSide3 = new Image();
-imgSide3.src = "./imgs/side3.png";
+imgSide3.src = "./imgs/newside3.png";
 
 const imgSide4 = new Image();
-imgSide4.src = "./imgs/side4.png";
+imgSide4.src = "./imgs/newside4.png";
 
 const backgroundImg = new Image();
-backgroundImg.src = "./imgs/pixil-frame-0 (7).png";
+backgroundImg.src = "./imgs/newbottle.png";
+
+const otherBackgroundImg = new Image();
+otherBackgroundImg.src = "./imgs/newnormal.png";
 
 const imgSven2 = new Image();
 imgSven2.src = "./imgs/centered-sven.png";
@@ -166,9 +169,14 @@ const controlsBar = {
 };
 
 // WAYPOINTS FOR MOVEMENT
+// const pathIndexes = [
+//   18, 27, 36, 37, 38, 29, 20, 11, 2, 3, 4, 13, 22, 31, 40, 41, 42, 33, 24, 25,
+//   26,
+// ];
+
 const pathIndexes = [
-  18, 27, 36, 37, 38, 29, 20, 11, 2, 3, 4, 13, 22, 31, 40, 41, 42, 33, 24, 25,
-  26,
+  20, 30, 40, 41, 42, 32, 22, 12, 2, 3, 4, 14, 24, 34, 44, 45, 46, 36, 26, 27,
+  28,
 ];
 
 const waypoints = [0, 2, 4, 8, 10, 14, 16, 18, 20];
@@ -188,7 +196,7 @@ function handleBase() {
 const bouncers = [];
 
 const bouncer1 = {
-  x: 520,
+  x: 600,
   y: 15,
   width: 70,
   height: 70,
@@ -280,7 +288,17 @@ function startGame() {
   function handleGameGrid() {
     for (let i = 0; i < gameGrid.length; i++) {
       gameGrid[i].draw();
-      gameGrid[i].fill(backgroundImg);
+      if (
+        gameGrid[i] === 13 ||
+        gameGrid[i] === 5 ||
+        gameGrid[i] === 47 ||
+        gameGrid[i] === 0
+      ) {
+        gameGrid[i].fill(backgroundImg);
+      } else {
+        gameGrid[i].fill(otherBackgroundImg);
+      }
+
       for (let i = 0; i < path.length; i++) {
         if (i === 0 || i === 10) {
           path[i].fill(imgSide3);
@@ -478,22 +496,22 @@ function startGame() {
     // Money
     ctx.fillStyle = "gold";
     ctx.font = "20px Rubik";
-    ctx.fillText("Money: " + money, 415, 55);
+    ctx.fillText("Money: " + money, 470, 55);
 
     // Base Health
     ctx.fillStyle = "gold";
     ctx.font = "20px Rubik";
-    ctx.fillText("Coolness Level: " + health, 720, 55);
+    ctx.fillText("Coolness Level: " + health, 820, 55);
 
     // Wave counter
     ctx.fillStyle = "gold";
     ctx.font = "20px Rubik";
-    ctx.fillText("Wave: " + wave, 170, 55);
+    ctx.fillText("Wave: " + wave, 200, 55);
 
     // Score
     ctx.fillStyle = "gold";
     ctx.font = "20px Rubik";
-    ctx.fillText("Score: " + score, 280, 55);
+    ctx.fillText("Score: " + score, 330, 55);
   }
 
   // add bergain logo
